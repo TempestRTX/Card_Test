@@ -70,7 +70,11 @@ public class GameManager : GenericSingleton<GameManager>
 
   private void ProcessUserPlayAction( appData.AppState state)
   {
-    ChangeAppState(state);
+    if (state==appData.AppState.SplashScreen)
+    {
+      ChangeAppState(appData.AppState.GameScreen);
+    }
+   
   }
 
   private void ChangeAppState(appData.AppState state)

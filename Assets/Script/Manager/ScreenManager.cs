@@ -8,8 +8,7 @@ public class ScreenManager : MonoBehaviour
 
     protected virtual void Start()
     {
-        gameManager = GameManager.Instance;
-        eventManager = EventManager.Instance;
+        
         InitScreen();
     }
     public virtual void OnBackButtonClicked(){
@@ -19,6 +18,7 @@ public class ScreenManager : MonoBehaviour
 
     public virtual void InitScreen()
     {
-       
+        gameManager = GameManager.Instance;
+        eventManager = EventManager.Instance;
     }
 }

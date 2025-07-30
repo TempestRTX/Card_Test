@@ -8,14 +8,15 @@ public class SplashScreenManager : ScreenManager
    private Coroutine _initcoroutine;
    public override void InitScreen()
    {
+       base.InitScreen();
        _initcoroutine = StartCoroutine(WaitforGameManager());
    }
 
    private IEnumerator WaitforGameManager()
-   { 
+   {
        yield return new WaitForSeconds(3f);
-      yield return new WaitUntil(() => gameManager.IsInit == true);
-      gameManager.OnUserAction(appData.UserAction.PlayGame,ScreenName);
+       yield return new WaitUntil(() => gameManager.IsInit == true);
+       gameManager.OnUserAction(appData.UserAction.PlayGame, ScreenName);
    }
 
 }

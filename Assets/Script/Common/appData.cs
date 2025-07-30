@@ -7,7 +7,7 @@ public class appData : MonoBehaviour
     public enum AppState
     {
         SplashScreen,
-        GameScene
+        GameScreen
     }
 
     public enum UserAction
@@ -34,6 +34,14 @@ public class appData : MonoBehaviour
     {
         public List<string> deck; 
     }
+
+
+
+    #region Events
+
+    public static string OnCardGrouped = "OnCardGrouped";
+
+    #endregion
   
 
 
