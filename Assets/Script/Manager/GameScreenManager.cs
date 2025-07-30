@@ -66,6 +66,12 @@ public class GameScreenManager : ScreenManager
         GameObject newGroup = Instantiate(groupPrefab, cardParent);
         newGroup.transform.localPosition = new Vector3(startX + cardParent.transform.childCount * groupSpacing, 0f, 0f);
         activeGroups.Add(newGroup);
+        foreach (var card in selectedCards)
+        {
+            card.transform.SetParent(newGroup.transform, false);            // Update hierarchy
+            card.UpdateParent(newGroup.transform);                         // Update internal references if needed
+            card.isSelected = false;                                       // Clear selection
+        }
         selectedCards.ForEach(x=>x.isSelected = false);
     }
 
@@ -121,6 +127,7 @@ public class GameScreenManager : ScreenManager
                     UICard card = newCard.GetComponent<UICard>();
                     card.UpdateParent(newGroup.transform);
                     card.Setup(cardData, gameScreenCanvas);
+                    activeCards.Add(card);
                 }
                 else
                 {
