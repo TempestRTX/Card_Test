@@ -1,8 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
 using Newtonsoft.Json;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 
@@ -17,7 +19,7 @@ public class GameManager : GenericSingleton<GameManager>
   private void Start()
   {
     SetDeviceOrientation();
-    LoadDatafromlocalfile();
+    LoadDataFromLocalFile();
   }
 
   public List<appData.Card> GetCardData()
@@ -33,23 +35,47 @@ public class GameManager : GenericSingleton<GameManager>
 
   #region  CardData
 
-  private void LoadDatafromlocalfile()
+  public void LoadDataFromLocalFile()
+  {
+    StartCoroutine(LoadJsonFromStreamingAssets());
+  }
+  
+  private IEnumerator LoadJsonFromStreamingAssets()
   {
     string fullPath = Path.Combine(Application.streamingAssetsPath, filePath);
 
-    if (File.Exists(fullPath))
+#if UNITY_ANDROID && !UNITY_EDITOR
+        string uri = fullPath; // already has jar:file:// prefix in Android
+#else
+    string uri = "file://" + fullPath;
+#endif
+
+    UnityWebRequest request = UnityWebRequest.Get(uri);
+    yield return request.SendWebRequest();
+
+    if (request.result != UnityWebRequest.Result.Success)
     {
-      string json = File.ReadAllText(fullPath);
-      appData.RootWrapper wrapper = JsonConvert.DeserializeObject<appData.RootWrapper>(json);
-        
-      cardDatas = wrapper.data.deck.Select(name => new appData.Card { cardName = name }).ToList();
-      
-      Debug.Log("Loaded card names: " + string.Join(", ", cardDatas));
+      Debug.LogError("Failed to load JSON: " + request.error + " | Path: " + uri);
     }
     else
     {
-      Debug.LogError("File not found at path: " + fullPath);
+      string json = request.downloadHandler.text;
+
+      try
+      {
+        appData.RootWrapper wrapper = JsonConvert.DeserializeObject<appData.RootWrapper>(json);
+        cardDatas = wrapper.data.deck
+          .Select(name => new appData.Card { cardName = name })
+          .ToList();
+
+        Debug.Log("Loaded card names: " + string.Join(", ", cardDatas));
+      }
+      catch (System.Exception ex)
+      {
+        Debug.LogError("JSON Deserialization Error: " + ex.Message);
+      }
     }
+
     IsInit = true;
   }
 
