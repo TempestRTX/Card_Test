@@ -7,7 +7,7 @@ public class appData : MonoBehaviour
     public enum AppState
     {
         SplashScreen,
-        CardScene
+        GameScene
     }
 
     public enum UserAction

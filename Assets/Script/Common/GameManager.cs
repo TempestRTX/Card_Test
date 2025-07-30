@@ -10,12 +10,19 @@ public class GameManager : GenericSingleton<GameManager>
 {
   [SerializeField] private string filePath = "card_data.json";
   [SerializeField] private List<appData.Card> cardDatas = new List<appData.Card>();
+  [SerializeField] private ScreenOrientation deviceOrientation = ScreenOrientation.LandscapeLeft;
   
   public bool IsInit = false;
 
   private void Start()
   {
+    SetDeviceOrientation();
     LoadDatafromlocalfile();
+  }
+
+  private void SetDeviceOrientation()
+  {
+    Screen.orientation = deviceOrientation;
   }
 
 

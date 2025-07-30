@@ -12,8 +12,10 @@ public class SplashScreenManager : ScreenManager
    }
 
    private IEnumerator WaitforGameManager()
-   {
+   { 
+       yield return new WaitForSeconds(3f);
       yield return new WaitUntil(() => gameManager.IsInit == true);
+      gameManager.OnUserAction(appData.UserAction.PlayGame,ScreenName);
    }
 
 }
