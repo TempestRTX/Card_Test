@@ -4,12 +4,19 @@ using UnityEngine.EventSystems;
 
 public class DropZone : MonoBehaviour, IDropHandler
 {
-    EventManager eventManager;
+    private EventManager eventManager;
 
     private void Start()
     {
         eventManager = EventManager.Instance;
-        eventManager.Subscribe(appData.OnCardGrouped,DestoryInvalidGroup());
+        eventManager.Subscribe(appData.OnCardGrouped, OnCardGrouped);
+    }
+
+    private void OnDestroy()
+    {
+        
+        if (eventManager != null)
+            eventManager.Unsubscribe(appData.OnCardGrouped, OnCardGrouped);
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -23,10 +30,11 @@ public class DropZone : MonoBehaviour, IDropHandler
         }
     }
 
-    public Action<object> DestoryInvalidGroup()
+    private void OnCardGrouped(object data)
     {
-        if(transform.childCount ==0)
+        if (transform.childCount == 0)
+        {
             Destroy(gameObject);
-        return null;
+        }
     }
 }

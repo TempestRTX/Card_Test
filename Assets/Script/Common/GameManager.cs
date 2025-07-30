@@ -20,6 +20,11 @@ public class GameManager : GenericSingleton<GameManager>
     LoadDatafromlocalfile();
   }
 
+  public List<appData.Card> GetCardData()
+  {
+    return cardDatas;
+  }
+
   private void SetDeviceOrientation()
   {
     Screen.orientation = deviceOrientation;

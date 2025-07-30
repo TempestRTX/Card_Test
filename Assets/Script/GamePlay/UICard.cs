@@ -6,6 +6,7 @@ public class UICard : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, ID
 {
     public Image cardImage;
     public bool isSelected = false;
+    public string cardCode;
 
 
     private Transform originalParent;
@@ -48,4 +49,11 @@ public class UICard : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, ID
         transform.SetParent(originalParent);
         canvasGroup.blocksRaycasts = true;
     }
+    public void Setup(PlayingCard cardData,Canvas gameScreenCanvas)
+    {
+        cardImage.sprite = cardData.cardSprite;
+        cardCode = cardData.cardCode;
+        canvas = gameScreenCanvas;
+    }
+
 }
