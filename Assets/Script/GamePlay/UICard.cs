@@ -67,4 +67,10 @@ public class UICard : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, ID
         canvas = gameScreenCanvas;
     }
 
+    public void ResetSelected()
+    {
+        isSelected = false;
+        HighlightObject.SetActive(false);
+    }
+
 }

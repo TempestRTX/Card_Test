@@ -29,7 +29,7 @@ public class GameScreenManager : ScreenManager
         GroupButton.SetActive(false);
         eventManager.Subscribe(appData.OnCardSelected,EnableGroupingButton);
         eventManager.Subscribe(appData.OnCardGrouped,UnSelectGroup);
-        eventManager.Subscribe(appData.OnGroupDestroyed,UnSelectGroup);
+        eventManager.Subscribe(appData.OnGroupDestroyed,OnGroupDestroyed);
 
     }
 
@@ -46,7 +46,7 @@ public class GameScreenManager : ScreenManager
 
     private void UnSelectGroup(object eventParam)
     {
-        activeCards.ForEach(x=>x.isSelected = false);
+        activeCards.ForEach(x=>x.ResetSelected());
         GroupButton.SetActive(false);
     }
     public void GroupSelected()
@@ -70,9 +70,9 @@ public class GameScreenManager : ScreenManager
         {
             card.transform.SetParent(newGroup.transform, false);            // Update hierarchy
             card.UpdateParent(newGroup.transform);                         // Update internal references if needed
-            card.isSelected = false;                                       // Clear selection
+            card.ResetSelected();                                       // Clear selection
         }
-        selectedCards.ForEach(x=>x.isSelected = false);
+        selectedCards.ForEach(x=>x.ResetSelected());
     }
 
     [ContextMenu("Generate Playing Cards")]
