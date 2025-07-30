@@ -40,6 +40,8 @@ public class appData : MonoBehaviour
     #region Events
 
     public static string OnCardGrouped = "OnCardGrouped";
+    public static string OnCardSelected = "OnCardSelected";
+    public static string OnGroupDestroyed = "OnGroupDestroyed";
 
     #endregion
   

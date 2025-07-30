@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameScreenManager : ScreenManager
 {
@@ -14,6 +16,8 @@ public class GameScreenManager : ScreenManager
     [SerializeField] private int maxGroups = 3;
     [SerializeField] private int minGroupSize = 2;
     [SerializeField] private int maxGroupSize = 5;
+    [SerializeField] private GameObject GroupButton;
+    [SerializeField]private List<UICard> activeCards;
 
     private List<GameObject> activeGroups = new List<GameObject>();
 
@@ -21,6 +25,48 @@ public class GameScreenManager : ScreenManager
     {
         base.InitScreen();
         GeneratePlayingCards();
+        GroupButton.GetComponent<Button>().onClick.AddListener(GroupSelected);
+        GroupButton.SetActive(false);
+        eventManager.Subscribe(appData.OnCardSelected,EnableGroupingButton);
+        eventManager.Subscribe(appData.OnCardGrouped,UnSelectGroup);
+        eventManager.Subscribe(appData.OnGroupDestroyed,UnSelectGroup);
+
+    }
+
+    private void EnableGroupingButton(object eventParam)
+    {
+        GroupButton.SetActive(true);
+    }
+
+    private void OnGroupDestroyed(object eventParam)
+    {
+        activeGroups.RemoveAll(x => x == null);
+    }
+
+
+    private void UnSelectGroup(object eventParam)
+    {
+        activeCards.ForEach(x=>x.isSelected = false);
+        GroupButton.SetActive(false);
+    }
+    public void GroupSelected()
+    {
+        GroupButton.SetActive(false);
+        var selectedCards=activeCards.Where(x=>x.isSelected).ToList();
+        //create new group and add these cards to that list
+        if (selectedCards.Count == 0)
+        {
+            Debug.Log("No cards selected to group.");
+            return;
+        }
+
+        float padding = 50f;
+        RectTransform parentRect = cardParent.GetComponent<RectTransform>();
+        float startX = parentRect.rect.xMin + padding;
+        GameObject newGroup = Instantiate(groupPrefab, cardParent);
+        newGroup.transform.localPosition = new Vector3(startX + cardParent.transform.childCount * groupSpacing, 0f, 0f);
+        activeGroups.Add(newGroup);
+        selectedCards.ForEach(x=>x.isSelected = false);
     }
 
     [ContextMenu("Generate Playing Cards")]

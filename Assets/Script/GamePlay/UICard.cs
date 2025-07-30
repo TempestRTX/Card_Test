@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -8,7 +9,10 @@ public class UICard : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, ID
     public bool isSelected = false;
     public string cardCode;
 
+    [SerializeField] private GameObject HighlightObject;
 
+
+    private EventManager eventManager;
     private Transform originalParent;
     private Canvas canvas;
     private RectTransform rectTransform;
@@ -21,9 +25,16 @@ public class UICard : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, ID
         canvasGroup = gameObject.AddComponent<CanvasGroup>();
     }
 
+    private void Start()
+    {
+        eventManager = EventManager.Instance;
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         isSelected = !isSelected;
+        HighlightObject.SetActive(isSelected);
+        eventManager.TriggerEvent(appData.OnCardSelected);
         
     }
 

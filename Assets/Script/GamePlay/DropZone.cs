@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class DropZone : MonoBehaviour, IDropHandler
 {
     private EventManager eventManager;
-
+    
     private void Start()
     {
         eventManager = EventManager.Instance;
@@ -34,6 +34,7 @@ public class DropZone : MonoBehaviour, IDropHandler
     {
         if (transform.childCount == 0)
         {
+            eventManager.TriggerEvent(appData.OnGroupDestroyed,gameObject);
             Destroy(gameObject);
         }
     }
