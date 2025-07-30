@@ -399,7 +399,6 @@ MonoBehaviour:
   minGroupSize: 2
   maxGroupSize: 5
   GroupButton: {fileID: 1013799067}
-  ResetButton: {fileID: 0}
   activeCards: []
 --- !u!1 &287272617
 GameObject:
