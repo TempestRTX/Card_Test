@@ -69,7 +69,9 @@ public class GameManager : GenericSingleton<GameManager>
       case appData.UserAction.PlayGame:
         ProcessUserPlayAction(state);
         break;
-        
+      case appData.UserAction.RestartGame:
+        ProcessUserRestartAction(state);
+        break;
     }
   }
 
@@ -80,6 +82,11 @@ public class GameManager : GenericSingleton<GameManager>
       ChangeAppState(appData.AppState.GameScreen);
     }
    
+  }
+
+  private void ProcessUserRestartAction(appData.AppState state)
+  {
+    ChangeAppState(state);  
   }
 
   private void ChangeAppState(appData.AppState state)

@@ -17,6 +17,7 @@ public class GameScreenManager : ScreenManager
     [SerializeField] private int minGroupSize = 2;
     [SerializeField] private int maxGroupSize = 5;
     [SerializeField] private GameObject GroupButton;
+    [SerializeField] private GameObject ResetButton;
 
     [SerializeField]private List<UICard> activeCards;
 
@@ -27,6 +28,8 @@ public class GameScreenManager : ScreenManager
         base.InitScreen();
         GeneratePlayingCards();
         GroupButton.GetComponent<Button>().onClick.AddListener(GroupSelected);
+        
+        ResetButton.GetComponent<Button>().onClick.AddListener(ResetGame);
       
         GroupButton.SetActive(false);
         eventManager.Subscribe(appData.OnCardSelected,EnableGroupingButton);
@@ -35,6 +38,10 @@ public class GameScreenManager : ScreenManager
 
     }
 
+    public void ResetGame()
+    {
+        gameManager.OnUserAction(appData.UserAction.RestartGame,ScreenName);
+    }
     private void EnableGroupingButton(object eventParam)
     {
         GroupButton.SetActive(true);

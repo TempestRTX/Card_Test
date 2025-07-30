@@ -13,7 +13,8 @@ public class appData : MonoBehaviour
     public enum UserAction
     {
         Backbutton,
-        PlayGame
+        PlayGame,
+        RestartGame
         
     }
     [System.Serializable]
