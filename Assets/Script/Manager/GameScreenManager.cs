@@ -17,6 +17,7 @@ public class GameScreenManager : ScreenManager
     [SerializeField] private int minGroupSize = 2;
     [SerializeField] private int maxGroupSize = 5;
     [SerializeField] private GameObject GroupButton;
+
     [SerializeField]private List<UICard> activeCards;
 
     private List<GameObject> activeGroups = new List<GameObject>();
@@ -26,6 +27,7 @@ public class GameScreenManager : ScreenManager
         base.InitScreen();
         GeneratePlayingCards();
         GroupButton.GetComponent<Button>().onClick.AddListener(GroupSelected);
+      
         GroupButton.SetActive(false);
         eventManager.Subscribe(appData.OnCardSelected,EnableGroupingButton);
         eventManager.Subscribe(appData.OnCardGrouped,UnSelectGroup);
